@@ -273,7 +273,7 @@ Label_1.pack()
 
 Label_2 = tk.Label(Frame_intro, bg=BLUE, font=("Arial", 20, "bold"), text=f"Which turn?")
 Label_2.place(x=50, y=0, width=210, height=50)
-
+ 
 reset_button = tk.Button(Frame_3, command=lambda: clear(), text=f"Reset")
 reset_button.place(x=50, y=10, width=50, height=30)
 
