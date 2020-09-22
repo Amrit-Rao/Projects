@@ -3,6 +3,7 @@ from tkinter import messagebox
 import copy
 import numpy as np
 
+#Initialize 2 roots , one for game and one for player select
 root_game = tk.Tk()
 root_intro = tk.Tk()
 
@@ -37,15 +38,15 @@ GREEN = "#00FF00"
 BLUE = "#0000FF"
 WHITE = "#FFFFFF"
 
-
-def intro(move):
+#Initial window to set the turn according to the player
+def player_select(move):
     global turn
     turn = 1 if move == 'X' else 2
     root_game.deiconify()
     root_intro.withdraw()
     ai_plays()
 
-
+#Clears the board
 def clear():
     global board, buttons, answer
     for i in range(3):
@@ -56,7 +57,7 @@ def clear():
     root_game.withdraw()
     root_intro.deiconify()
 
-
+#Mark X and O appropriately on the board and display who wins
 def action(row, column):
     global board, buttons, turn
     board[row][column] = 'X' if whose_turn(board) == 'X' else 'O'
@@ -85,7 +86,7 @@ def action(row, column):
     turn += 1
     ai_plays()
 
-
+#Defines turn
 def whose_turn(position):
     turn_helper = 0
     for i in range(3):
@@ -94,7 +95,7 @@ def whose_turn(position):
                 turn_helper += 1
     return 'X' if turn_helper % 2 == 0 else 'O'
 
-
+#Checks whether the board is full(results in draw)
 def is_full(position):
     for i in range(3):
         for j in range(3):
@@ -102,7 +103,7 @@ def is_full(position):
                 return False
     return True
 
-
+#Optimized function to play the first 2 moves, can work without this but will take some time
 def forced_play(position):
     global answer
     move = 0
@@ -165,7 +166,7 @@ def forced_play(position):
     else:
         return False
 
-
+#Get all possible plays from given board position
 def get_plays(position):
     plays = []
     symbol = 'X' if whose_turn(position) == 'X' else 'O'
@@ -176,7 +177,7 @@ def get_plays(position):
                 plays[-1][i][j] = symbol
     return plays
 
-
+#Checks for win 
 def check_for_win(position):
     invert_symbol = 'O' if whose_turn(position) == 'X' else 'X'
     for i in range(3):
@@ -190,7 +191,7 @@ def check_for_win(position):
         return invert_symbol
     return 'Draw'
 
-
+#Solves using Minimax theorem
 def solve(position):
     global answer
     if check_for_win(position) != 'Draw':
@@ -227,7 +228,7 @@ def solve(position):
             answer = plays[x_wins[-1][np.random.randint(len(x_wins[-1]))]]
             return 'X'
 
-
+#Function to play after the player has made their move through solve function
 def ai_plays():
     global board, buttons, turn, answer
     if turn % 2 == 0:
@@ -261,7 +262,7 @@ def ai_plays():
             clear()
             return
 
-
+#Initialization of board
 Frame_1 = tk.Frame(root_game, width=300, height=50)
 Frame_2 = tk.Frame(root_game, width=300, height=300)
 Frame_3 = tk.Frame(root_game, bg=GREEN, width=300, height=50)
@@ -282,10 +283,10 @@ quit_button_game.place(x=200, y=10, width=50, height=30)
 quit_button_intro = tk.Button(Frame_intro, command=lambda: quit(), text=f"Quit")
 quit_button_intro.place(x=200, y=60, width=50, height=30)
 
-first_button = tk.Button(Frame_intro, command=lambda i='X': intro(i), text=f"First")
+first_button = tk.Button(Frame_intro, command=lambda i='X': player_select(i), text=f"First")
 first_button.place(x=50, y=60, width=50, height=30)
 
-second_button = tk.Button(Frame_intro, command=lambda i='O': intro(i), text=f"Second")
+second_button = tk.Button(Frame_intro, command=lambda i='O': player_select(i), text=f"Second")
 second_button.place(x=125, y=60, width=50, height=30)
 
 Frame_1.pack(side="top")
