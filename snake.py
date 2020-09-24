@@ -28,9 +28,8 @@ length = 1
 
 snake_x = [200]
 snake_y = [200]
-
+ 
 clock = pygame.time.Clock()
-crash_sound = pygame.mixer.Sound("crash.wav")
 
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('Snake')
@@ -99,8 +98,6 @@ while not game_over:
         score += 1
         snake_x.insert(0, snake_x[0] + speed_x)
         snake_y.insert(0, snake_y[0] + speed_y)
-        pygame.mixer.Sound.play(crash_sound)
-        pygame.mixer.music.stop()
         new_food()
 
     if snake_x[0] < 0:
